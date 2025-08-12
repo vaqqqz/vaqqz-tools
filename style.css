@@ -1,0 +1,97 @@
+:root {
+  --bg:#000;
+  --text:#d9d9d9;
+  --mono:"Martian Mono", monospace;
+
+  --grad-rose-from:#ff66cc;
+  --grad-rose-to:#a020f0;
+
+  --grad-green-from:#00ff88;
+  --grad-green-to:#006633;
+
+  --grad-orange-from:#ff9900;
+  --grad-orange-to:#cc3300;
+
+  --grad-blue-from:#00ccff;
+  --grad-blue-to:#003366;
+}
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--mono);
+  font-size:16px;
+  text-transform:uppercase;
+}
+
+.wrap {
+  max-width:880px;
+  margin:48px auto;
+  padding:24px;
+  box-sizing:border-box;
+}
+
+header {
+  margin-bottom:28px;
+  text-align:center;
+}
+header h1 {
+  margin:0;
+  font-weight:700;
+  font-size:22px;
+}
+
+section {
+  margin-bottom:50px; /* Отступ между ветками */
+}
+
+ol {
+  margin:0;
+  padding-left:1.1em;
+  list-style-position:inside;
+}
+
+li {
+  cursor:pointer;
+  transition:color 0.2s;
+}
+li:hover {
+  color:white;
+}
+
+.dev-note {
+  font-size:13px;
+  color:#ff5555;
+  margin-left:1.2em;
+  margin-top:0;
+  white-space:pre;
+}
+
+.branch-title {
+  font-weight:700;
+  font-size:15px;
+  background-clip:text;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:4px;
+}
+.rose-title {
+  background:linear-gradient(90deg,var(--grad-rose-from),var(--grad-rose-to));
+}
+.green-title {
+  background:linear-gradient(90deg,var(--grad-green-from),var(--grad-green-to));
+}
+.orange-title {
+  background:linear-gradient(90deg,var(--grad-orange-from),var(--grad-orange-to));
+}
+.blue-title {
+  background:linear-gradient(90deg,var(--grad-blue-from),var(--grad-blue-to));
+}
+
+footer {
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  margin-top: 60px;
+}

@@ -1,0 +1,510 @@
+port: 0
+socks-port: 0
+redir-port: 0
+tproxy-port: 0
+mixed-port: 7890
+ss-config: ""
+vmess-config: ""
+inbound-tfo: false
+inbound-mptcp: false
+authentication: []
+skip-auth-prefixes: null
+lan-allowed-ips:
+  - "0.0.0.0/0"
+  - "::/0"
+lan-disallowed-ips: null
+allow-lan: false
+bind-address: "*"
+mode: "rule"
+unified-delay: true
+log-level: "error"
+ipv6: false
+external-controller: ""
+external-controller-pipe: ""
+external-controller-unix: ""
+external-controller-tls: ""
+external-controller-cors:
+  allow-origins:
+    - "*"
+  allow-private-network: true
+external-ui: ""
+external-ui-url: ""
+external-ui-name: ""
+external-doh-server: ""
+secret: ""
+interface-name: ""
+routing-mark: 0
+tunnels: null
+geo-auto-update: false
+geo-update-interval: 24
+geodata-mode: false
+geodata-loader: "memconservative"
+geosite-matcher: ""
+tcp-concurrent: true
+find-process-mode: "always"
+global-client-fingerprint: ""
+global-ua: "FlClash/v0.8.92 clash-verge Platform/android"
+etag-support: true
+keep-alive-idle: 0
+keep-alive-interval: 30
+disable-keep-alive: false
+proxy-providers:
+  prov:
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/proxies/89e06af53f320596793155f25f7a8373"
+    type: "http"
+    url: "<ВВЕДИТЕ URL ПОДПИСКИ>"
+rule-providers:
+  apple:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/d4e6c0af7a77a63aa0a0c540a88cc2a6"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/apple.mrs"
+  category-ads:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/fd0c5329a9195ac0bf10c12be7e50149"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/category-ads.mrs"
+  category-ru:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/d84fdd88fcb355f4b7bafee17cb995ee"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/category-ru.mrs"
+  direct-ips:
+    behavior: "ipcidr"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/6d4bc8ce14abc353e720c923a359e734"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geoip/release/mihomo/direct.mrs"
+  epicgames:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/56d158751787466d1475221fd5039ef1"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/epicgames.mrs"
+  escapefromtarkov:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/3aef24ee0fd596c61290bd79952cdf55"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/escapefromtarkov.mrs"
+  faceit:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/02750f11212f133a23010594934099bb"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/faceit.mrs"
+  games:
+    behavior: "classical"
+    format: "yaml"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/8978ab75037ac16ed557af67e5e8ba22"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://raw.githubusercontent.com/roscomvpn/custom-category/release/mihomo/games.yaml"
+  github:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/5c642e2a4167ca05ada07865e94778cf"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/github.mrs"
+  google-play:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/16bfb0e787074897b30ce2b308583c02"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/google-play.mrs"
+  microsoft:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/d14b1857c979c01538de53d2e6757f43"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/microsoft.mrs"
+  origin:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/f0fe5b762ff9f03a78a00636188eb453"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/origin.mrs"
+  pinterest:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/df2f2895c0ebc33045fd5a9d61f3aca1"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/pinterest.mrs"
+  private-domains:
+    behavior: "domain"
+    format: "mrs"
+    interval: 2592000
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/99f2406e33f43fe521ee6d13236a0b36"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/private.mrs"
+  private-ips:
+    behavior: "ipcidr"
+    format: "mrs"
+    interval: 2592000
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/47bf7c2bc215366231115d21735ef86f"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geoip/release/mihomo/private.mrs"
+  riot:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/fd4f183984b6602ba3131fbe252bd96e"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/riot.mrs"
+  ru-apps:
+    behavior: "classical"
+    format: "yaml"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/216bae3a6b24db40219a3465e0efc3de"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://raw.githubusercontent.com/roscomvpn/custom-category/release/mihomo/ru-apps.yaml"
+  steam:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/82a5bd571958cdb49403076188a16ae1"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/steam.mrs"
+  telegram:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/a7dc6f4f1bd51741cc3d2d0259e8816e"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/telegram.mrs"
+  torrent-clients:
+    behavior: "classical"
+    format: "yaml"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/5254836ddff8d4c69f948dd98dbe953a"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://raw.githubusercontent.com/legiz-ru/mihomo-rule-sets/main/other/torrent-clients.yaml"
+  torrent-domains:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/e6f5179f4c050dc8e361c536878efb2b"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/torrent.mrs"
+  twitch:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/f4a181815dbb51699362b19606b7c8cf"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/twitch.mrs"
+  twitch-ads:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/4d0e9b54b3b7f7e551102ad184901333"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/twitch-ads.mrs"
+  whitelist:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/9d41684b0fcae39b0f82255fba7869bd"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/whitelist.mrs"
+  win-spy:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/0afac597976c4fedaab0e98b7cbdee31"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/win-spy.mrs"
+  youtube:
+    behavior: "domain"
+    format: "mrs"
+    interval: 86400
+    path: "/data/user/0/com.follow.clash/files/profiles/providers/300871340284448768/rules/fc0ef1de7fcb6469723758aa525b52bd"
+    proxy: "⚡️ Авто"
+    type: "http"
+    url: "https://cdn.jsdelivr.net/gh/hydraponique/roscomvpn-geosite/release/mihomo/youtube.mrs"
+proxies: []
+proxy-groups:
+  - icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Hijacking.png"
+    include-all: true
+    name: "🛡️ VPN"
+    proxies:
+      - "⚡️ Авто"
+    type: "select"
+    url: "https://www.gstatic.com/generate_204"
+  - icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/YouTube.png"
+    include-all: true
+    name: "📺 Youtube"
+    proxies:
+      - "🛡️ VPN"
+    type: "select"
+  - icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Discord.png"
+    include-all: true
+    name: "💬 Discord.exe"
+    proxies:
+      - "🛡️ VPN"
+    type: "select"
+  - icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Game.png"
+    include-all: true
+    name: "🎮 Игры"
+    proxies:
+      - "🔓 Без VPN"
+      - "🛡️ VPN"
+    type: "select"
+  - hidden: true
+    include-all: true
+    interval: 300
+    name: "⚡️ Авто"
+    tolerance: 150
+    type: "url-test"
+    url: "https://www.gstatic.com/generate_204"
+  - hidden: true
+    name: "PROXY"
+    proxies:
+      - "🛡️ VPN"
+    type: "select"
+  - hidden: true
+    name: "🔓 Без VPN"
+    proxies:
+      - "DIRECT"
+    type: "select"
+  - hidden: true
+    name: "⛔ Блок"
+    proxies:
+      - "REJECT"
+    type: "select"
+  - hidden: true
+    name: "⏭️ Пропуск"
+    proxies:
+      - "PASS"
+    type: "select"
+sub-rules: null
+listeners: null
+hosts: {}
+dns:
+  enable: true
+  prefer-h3: false
+  ipv6: false
+  ipv6-timeout: 100
+  use-hosts: true
+  use-system-hosts: true
+  respect-rules: false
+  nameserver:
+    - "https://8.8.8.8/dns-query#PROXY"
+  fallback: null
+  fallback-filter:
+    geoip: true
+    geoip-code: "CN"
+    ipcidr: []
+    domain: null
+    geosite: []
+  listen: ""
+  enhanced-mode: "fake-ip"
+  fake-ip-range: "198.18.0.1/16"
+  fake-ip-range6: ""
+  fake-ip-filter:
+    - "rule-set:private-domains"
+  fake-ip-filter-mode: "blacklist"
+  fake-ip-ttl: 1
+  default-nameserver:
+    - "https://77.88.8.8/dns-query"
+    - "https://8.8.8.8/dns-query"
+  cache-algorithm: ""
+  cache-max-size: 0
+  nameserver-policy: null
+  proxy-server-nameserver:
+    - "https://77.88.8.8/dns-query"
+    - "https://8.8.8.8/dns-query"
+  direct-nameserver:
+    - "https://77.88.8.8/dns-query"
+    - "https://8.8.8.8/dns-query"
+  direct-nameserver-follow-policy: false
+ntp:
+  enable: false
+  server: "time.apple.com"
+  port: 123
+  interval: 30
+  dialer-proxy: ""
+  write-to-system: false
+tun:
+  enable: false
+  device: "FlClash"
+  stack: "mixed"
+  dns-hijack:
+    - "any:53"
+  auto-route: true
+  AutoDetectInterface: true
+  inet6-address:
+    - "fdfe:dcba:9876::1/126"
+  strict-route: true
+  route-exclude-address:
+    - "224.0.0.0/3"
+    - "10.0.0.0/8"
+    - "127.0.0.0/8"
+    - "100.64.0.0/10"
+    - "172.16.0.0/12"
+    - "169.254.0.0/16"
+    - "192.168.0.0/16"
+    - "192.0.0.0/24"
+    - "192.0.2.0/24"
+    - "192.88.99.0/24"
+    - "198.51.100.0/24"
+    - "203.0.113.0/24"
+    - "fc00::/7"
+    - "ff00::/8"
+    - "fe80::/10"
+    - "::/127"
+  file-descriptor: 0
+  recvmsgx: true
+  route-address: []
+tuic-server:
+  enable: false
+  listen: ""
+  token: null
+  certificate: ""
+  private-key: ""
+  max-idle-time: 15000
+  authentication-timeout: 1000
+  alpn:
+    - "h3"
+  max-udp-relay-packet-size: 1500
+iptables:
+  enable: false
+  inbound-interface: "lo"
+  bypass: []
+  dns-redirect: true
+experimental:
+  Fingerprints: null
+  QUICGoDisableGSO: false
+  QUICGoDisableECN: true
+  IP4PEnable: false
+profile:
+  store-selected: false
+  store-fake-ip: true
+geox-url:
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb"
+  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
+  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+sniffer:
+  enable: true
+  override-destination: false
+  sniffing: null
+  force-domain: []
+  skip-src-address: null
+  skip-dst-address:
+    - "224.0.0.0/3"
+    - "10.0.0.0/8"
+    - "127.0.0.0/8"
+    - "100.64.0.0/10"
+    - "172.16.0.0/12"
+    - "198.18.0.0/15"
+    - "169.254.0.0/16"
+    - "192.168.0.0/16"
+    - "192.0.0.0/24"
+    - "192.0.2.0/24"
+    - "192.88.99.0/24"
+    - "198.51.100.0/24"
+    - "203.0.113.0/24"
+    - "fc00::/7"
+    - "ff00::/8"
+    - "fe80::/10"
+    - "::/127"
+  skip-domain: []
+  port-whitelist: []
+  force-dns-mapping: true
+  parse-pure-ip: true
+  sniff:
+    HTTP:
+      ports:
+        - "80"
+        - "8080-8880"
+      override-destination: null
+    TLS:
+      ports:
+        - "443"
+        - "8443"
+      override-destination: null
+tls:
+  certificate: ""
+  private-key: ""
+  client-auth-type: ""
+  client-auth-cert: ""
+  ech-key: ""
+  custom-certifactes: null
+clash-for-android:
+  append-system-dns: false
+  ui-subtitle-pattern: ""
+rules:
+  - "RULE-SET,private-ips,DIRECT,no-resolve"
+  - "IP-CIDR,::/0,REJECT-DROP,no-resolve"
+  - "AND,((NETWORK,UDP),(DST-PORT,443)),REJECT-DROP"
+  - "RULE-SET,private-domains,DIRECT"
+  - "RULE-SET,category-ads,REJECT-DROP"
+  - "RULE-SET,win-spy,REJECT-DROP"
+  - "RULE-SET,torrent-domains,DIRECT"
+  - "RULE-SET,twitch-ads,PROXY"
+  - "RULE-SET,youtube,📺 Youtube"
+  - "RULE-SET,telegram,PROXY"
+  - "RULE-SET,github,PROXY"
+  - "RULE-SET,epicgames,🎮 Игры"
+  - "RULE-SET,origin,🎮 Игры"
+  - "RULE-SET,riot,🎮 Игры"
+  - "RULE-SET,escapefromtarkov,🎮 Игры"
+  - "RULE-SET,steam,🎮 Игры"
+  - "RULE-SET,faceit,🎮 Игры"
+  - "RULE-SET,twitch,DIRECT"
+  - "RULE-SET,microsoft,DIRECT"
+  - "RULE-SET,apple,DIRECT"
+  - "RULE-SET,google-play,DIRECT"
+  - "RULE-SET,pinterest,DIRECT"
+  - "RULE-SET,category-ru,DIRECT"
+  - "RULE-SET,whitelist,DIRECT"
+  - "RULE-SET,torrent-clients,DIRECT"
+  - "PROCESS-NAME-REGEX,discord,💬 Discord.exe"
+  - "PROCESS-NAME-REGEX,vesktop,💬 Discord.exe"
+  - "RULE-SET,games,🎮 Игры"
+  - "RULE-SET,ru-apps,DIRECT"
+  - "RULE-SET,direct-ips,DIRECT"
+  - "MATCH,PROXY"
+

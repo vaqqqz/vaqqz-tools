@@ -3,43 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy AMOLED Aggregator</title>
+    <title>Proxy Aggregator CLI</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>Proxy Aggregator</h1>
+    <div class="header">
+        <h1>Proxy_CLI</h1>
+        <span class="blinking-cursor"></span>
+    </div>
     
-    <label>Введите ссылки на TXT файлы:</label>
-    <textarea id="urls" placeholder="https://raw.githubusercontent.com/..."></textarea>
+    <div class="input-group">
+        <label for="urls">// Введите ссылки на TXT-файлы (каждая с новой строки)</label>
+        <textarea id="urls" placeholder="https://raw.githubusercontent.com/example/proxies.txt"></textarea>
+    </div>
     
     <div class="controls">
-        <button class="btn-run" onclick="processProxies()">Собрать прокси</button>
-        <button class="btn-copy" onclick="copyToClipboard()">Копировать все</button>
+        <button onclick="processProxies()">[ Execute ]</button>
+        <button onclick="copyToClipboard()">[ Copy Output ]</button>
     </div>
 
-    <div class="status" id="status">Система готова</div>
-    <div id="output">Здесь появится результат...</div>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="terminal-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            <span class="terminal-title">bash - root@proxy-node:~</span>
+        </div>
+        <div class="terminal-body" id="output">
+            <span class="terminal-line"><span class="terminal-prefix">$</span> Ожидание команд...</span>
+        </div>
+    </div>
 </div>
 
 <script>
+    const outputDiv = document.getElementById('output');
+    let finalProxies = []; // Храним чистый список для копирования
+
+    // Функция для добавления строк в терминал
+    function logToTerminal(text, isSuccess = false) {
+        const line = document.createElement('span');
+        line.className = 'terminal-line' + (isSuccess ? ' success' : '');
+        line.innerHTML = `<span class="terminal-prefix">$</span> ${text}`;
+        outputDiv.appendChild(line);
+        // Автоскролл вниз
+        outputDiv.scrollTop = outputDiv.scrollHeight;
+    }
+
+    // Очистка терминала
+    function clearTerminal() {
+        outputDiv.innerHTML = '';
+        finalProxies = [];
+    }
+
     async function processProxies() {
         const urlsText = document.getElementById('urls').value.trim();
-        const output = document.getElementById('output');
-        const status = document.getElementById('status');
         
         if (!urlsText) {
-            alert('Введите ссылки!');
+            alert('Поле ввода пустое!');
             return;
         }
 
+        clearTerminal();
         const urls = urlsText.split('\n').map(url => url.trim()).filter(url => url);
-        status.innerText = 'Выполняется запрос...';
+        
+        logToTerminal(`Инициализация... Обнаружено источников: ${urls.length}`);
         
         let allProxies = [];
 
-        for (let url of urls) {
+        for (let i = 0; i < urls.length; i++) {
+            const url = urls[i];
+            logToTerminal(`Загрузка [${i+1}/${urls.length}]: ${url.substring(0, 40)}...`);
+            
             try {
                 const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
                 const response = await fetch(proxyUrl);
@@ -54,25 +92,46 @@
                         line.startsWith('ss://')
                     );
                     allProxies = allProxies.concat(filtered);
+                    logToTerminal(`Успех. Извлечено прокси: ${filtered.length}`, true);
+                } else {
+                    logToTerminal(`Ошибка: Нет данных по этой ссылке.`);
                 }
             } catch (e) {
-                console.error('Ошибка:', url);
+                logToTerminal(`Ошибка соединения с источником.`);
             }
         }
 
         const uniqueProxies = [...new Set(allProxies)];
-        output.innerText = uniqueProxies.length > 0 ? uniqueProxies.join('\n') : 'Ничего не найдено.';
-        status.innerText = `Найдено: ${uniqueProxies.length}`;
+        finalProxies = uniqueProxies;
+
+        logToTerminal('-----------------------------------');
+        logToTerminal(Агрегация завершена. Уникальных прокси: ${uniqueProxies.length});
+        
+        if (uniqueProxies.length > 0) {
+            logToTerminal('Генерация списка...', true);
+            // Выводим сами прокси в терминал
+            uniqueProxies.forEach(proxy => {
+                logToTerminal(proxy, true);
+            });
+        }
     }
 
     function copyToClipboard() {
-        const text = document.getElementById('output').innerText;
-        if (text === 'Здесь появится результат...') return;
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Скопировано!');
+        if (finalProxies.length === 0) {
+            alert('Нет данных для копирования!');
+            return;
+        }
+        const textToCopy = finalProxies.join('\n');
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            alert(Скопировано прокси: ${finalProxies.length});
+        }).catch(err => {
+            alert('Ошибка копирования. Попробуйте вручную.');
         });
     }
 </script>
 
 </body>
 </html>
+
+
+`

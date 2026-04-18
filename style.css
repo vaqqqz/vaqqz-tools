@@ -1,97 +1,139 @@
+/* Подключаем шрифт JetBrains Mono */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
 :root {
-  --bg:#000;
-  --text:#d9d9d9;
-  --mono:"Martian Mono", monospace;
-
-  --grad-rose-from:#ff66cc;
-  --grad-rose-to:#a020f0;
-
-  --grad-green-from:#00ff88;
-  --grad-green-to:#006633;
-
-  --grad-orange-from:#ff9900;
-  --grad-orange-to:#cc3300;
-
-  --grad-blue-from:#00ccff;
-  --grad-blue-to:#003366;
+    --bg-color: #000000;
+    --card-bg: #000000;
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1aa;
+    --accent-color: #ffffff;
+    --border-color: #27272a;
+    --input-bg: #09090b;
+    --button-hover: #e4e4e7;
 }
 
 body {
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:var(--mono);
-  font-size:16px;
-  text-transform:uppercase;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-.wrap {
-  max-width:880px;
-  margin:48px auto;
-  padding:24px;
-  box-sizing:border-box;
+.container {
+    width: 100%;
+    max-width: 700px;
+    background: var(--card-bg);
+    padding: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 0px; /* Острые углы в стиле AMOLED */
 }
 
-header {
-  margin-bottom:28px;
-  text-align:center;
-}
-header h1 {
-  margin:0;
-  font-weight:700;
-  font-size:22px;
-}
-
-section {
-  margin-bottom:50px; /* Отступ между ветками */
+h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    border-left: 4px solid var(--accent-color);
+    padding-left: 15px;
 }
 
-ol {
-  margin:0;
-  padding-left:1.1em;
-  list-style-position:inside;
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+    font-size: 14px;
 }
 
-li {
-  cursor:pointer;
-  transition:color 0.2s;
-}
-li:hover {
-  color:white;
-}
-
-.dev-note {
-  font-size:13px;
-  color:#ff5555;
-  margin-left:1.2em;
-  margin-top:0;
-  white-space:pre;
-}
-
-.branch-title {
-  font-weight:700;
-  font-size:15px;
-  background-clip:text;
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  margin-bottom:4px;
-}
-.rose-title {
-  background:linear-gradient(90deg,var(--grad-rose-from),var(--grad-rose-to));
-}
-.green-title {
-  background:linear-gradient(90deg,var(--grad-green-from),var(--grad-green-to));
-}
-.orange-title {
-  background:linear-gradient(90deg,var(--grad-orange-from),var(--grad-orange-to));
-}
-.blue-title {
-  background:linear-gradient(90deg,var(--grad-blue-from),var(--grad-blue-to));
+textarea {
+    width: 100%;
+    height: 150px;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 0;
+    padding: 15px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
 }
 
-footer {
-  text-align: center;
-  font-size: 12px;
-  color: #888;
-  margin-top: 60px;
+textarea:focus {
+    border-color: var(--accent-color);
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+button {
+    padding: 15px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid var(--accent-color);
+}
+
+.btn-run {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+}
+
+.btn-run:hover {
+    background-color: var(--button-hover);
+}
+
+.btn-copy {
+    background-color: transparent;
+    color: var(--accent-color);
+}
+
+.btn-copy:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.status {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+#output {
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    min-height: 100px;
+    max-height: 400px;
+    overflow-y: auto;
+    font-size: 12px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* Стилизация скроллбара под AMOLED */
+#output::-webkit-scrollbar {
+    width: 5px;
+}
+#output::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+#output::-webkit-scrollbar-thumb {
+    background: var(--border-color);
 }

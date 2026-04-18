@@ -1,165 +1,77 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ГОРОДА СВИНЛЕНДА</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="style.css" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy AMOLED Aggregator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>ГОРОДА СВИНЛЕНДА</h1>
-    </header>
 
-    <!-- РОЗОВАЯ ВЕТКА -->
-    <section>
-      <div class="branch-title rose-title">РОЗОВАЯ ВЕТКА</div>
-      <ol>
-        <li>ОКЕАНИЯ</li>
-        <li>ЦАРЬГРАД</li>
-        <li>ЕЛОВКА</li>
-        <li>ДОБРИЙ</li>
-        <li>БРАТВА</li>
-        <li>СУМЕРК</li>
-        <li>ФОРЦБУРГ</li>
-        <li>АЛЬТУШКАГРАД</li>
-        <li>ГРИМОРИЯ</li>
-        <li>ЧИЛЛГРАД</li>
-        <li>ВИШНЕГРАД</li>
-        <li>АЙНКРАД</li>
-        <li>НИЖНЯЯ АНТОНОВКА</li>
-        <li>КАМЕННОГРАД</li>
-        <li>ТРАСТБУРГ</li>
-        <li>БРИГАНТИЯ</li>
-        <li>ПЧЕЛГРАД</li>
-        <li>ЯСНОГРАДСК</li>
-        <li>ВИНТЕРХОЛД</li>
-        <li>ТОКСИСИТИ</li>
-        <li>ФЕМБОЙСК</li>
-        <li>БУСТЕРГРАД</li>
-        <li>ГОРГОРОД</li>
-        <li>БОРЕЙ</li>
-        <li>ПОПОВСК</li>
-        <li>ЖЕЛЕЗОГРАД</li>
-        <li>(НЕ)СЧАСТЬЕВСК</li>
-        <li>404-СИТИ</li>
-        <li>МОРИКАВА</li>
-        <li>БЕЗДНА</li>
-      </ol>
-    </section>
+<div class="container">
+    <h1>Proxy Aggregator</h1>
+    
+    <label>Введите ссылки на TXT файлы:</label>
+    <textarea id="urls" placeholder="https://raw.githubusercontent.com/..."></textarea>
+    
+    <div class="controls">
+        <button class="btn-run" onclick="processProxies()">Собрать прокси</button>
+        <button class="btn-copy" onclick="copyToClipboard()">Копировать все</button>
+    </div>
 
-    <!-- ЗЕЛЁНАЯ ВЕТКА -->
-    <section>
-      <div class="branch-title green-title">ЗЕЛЁНАЯ ВЕТКА</div>
-      <ol>
-        <li>ОЛИМП</li>
-        <li>РУДНО-ШАХТИСК</li>
-        <li>ЭРЕБОР</li>
-        <li>ЗЛОТОГОРЬЕ</li>
-        <li>ГОРОД-21+</li>
-        <li>ПИТСА-СИТИ</li>
-        <li>МОПСГРАД</li>
-        <li>ГАНДОНИЯ</li>
-        <li>ДУМЕРГРАД</li>
-        <li>УТОПИЯ</li>
-        <li>АРКОФФ</li>
-        <li>НОВЫЙ ЯРНАМ</li>
-        <li>ВАЙБОГРАД</li>
-        <li>СИЛЬВИОН</li>
-        <li>КСАРИФЕЙН</li>
-        <li>ОРДЕНГРАД</li>
-        <li>АЙРОН</li>
-        <li>КАМЕЛТАУН</li>
-        <li>ВИНДСБУРГ</li>
-        <li>ПАРАДАЙС</li>
-        <li>РЕЙВЕНМОР</li>
-        <li>ЛЮМЕН-БЕЙ</li>
-      </ol>
-    </section>
-
-    <!-- ОРАНЖЕВАЯ ВЕТКА -->
-    <section>
-      <div class="branch-title orange-title">ОРАНЖЕВАЯ ВЕТКА</div>
-      <ol>
-        <li>ШИРАЙ РЮ</li>
-        <li>АЛЬФОРД</li>
-        <li>КАЙФОГРАД</li>
-        <li>ДОМ ДУКУ</li>
-        <li>НОКТВИЛЬ</li>
-        <li>ЗАЛУПЕНСК</li>
-        <li>СИД-СИТИ</li>
-        <li>ДРЕВОГРАД</li>
-        <li>КАПИ-ТАУН</li>
-        <li>ЗАБЫТЫЕ ПЕСКИ</li>
-        <li>МИЛФОЛОР</li>
-        <li>ПРОХОРОВКА</li>
-        <li>ШКОЛОГРАД</li>
-        <li>ДИ-ТИ</li>
-        <li>ДОДЕПБУРГ</li>
-        <li>МИРОГРАД</li>
-        <li>ОРДЕН САЛО</li>
-        <li>ВЕРХНИЕ БИПКИ</li>
-        <li>ДРЕВОГРАД</li>
-        <li>КРОНШТАДТ</li>
-        <li>БЛУДГАРД</li>
-        <li>ПОЛИХРОМ</li>
-        <li>АУРЕЛОН</li>
-        <li>САСКЫЛАХ</li>
-        <li>ФРОЗЕНВИЛЛЬ</li>
-      </ol>
-    </section>
-
-    <!-- СИНЯЯ ВЕТКА -->
-    <section>
-      <div class="branch-title blue-title">СИНЯЯ ВЕТКА</div>
-      <ol>
-        <li>ПЛАНК-СИТИ</li>
-        <li>ЛУСКАН</li>
-        <li>СВИН-СИТИ</li>
-        <li>КАПИ-ТАУН</li>
-        <li>НЕКРОПОЛИС</li>
-        <li>ПУП-СИТИ</li>
-        <li>ФЕРМОГРАД</li>
-        <li>ЧАМБУРГ</li>
-        <li>ПИЛЛАР</li>
-        <li>СИЕННА</li>
-        <li>СИГМОГРАД</li>
-        <li>БЛУАВИЛЬ</li>
-      </ol>
-    </section>
-
-    <footer>
-      <p>© 2025 ГОРОДА СВИНЛЕНДА. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</p>
-    </footer>
-  </div>
+    <div class="status" id="status">Система готова</div>
+    <div id="output">Здесь появится результат...</div>
+</div>
 
 <script>
-function typeWriterEffect(element, text, speed=40) {
-  let i = 0;
-  function type() {
-    if (i < text.length) {
-      element.textContent += text.charAt(i);
-      i++;
-      setTimeout(type, speed);
-    }
-  }
-  type();
-}
+    async function processProxies() {
+        const urlsText = document.getElementById('urls').value.trim();
+        const output = document.getElementById('output');
+        const status = document.getElementById('status');
+        
+        if (!urlsText) {
+            alert('Введите ссылки!');
+            return;
+        }
 
-document.querySelectorAll('li').forEach(li=>{
-  li.addEventListener('click',()=>{
-    document.querySelectorAll('.dev-note').forEach(el=>el.remove());
-    const note = document.createElement('div');
-    note.className = 'dev-note';
-    li.parentNode.insertBefore(note, li.nextSibling);
-    typeWriterEffect(note, 'ОТДЕЛ В РАЗРАБОТКЕ', 35);
-  });
-});
+        const urls = urlsText.split('\n').map(url => url.trim()).filter(url => url);
+        status.innerText = 'Выполняется запрос...';
+        
+        let allProxies = [];
+
+        for (let url of urls) {
+            try {
+                const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+                
+                if (data.contents) {
+                    const lines = data.contents.split('\n');
+                    const filtered = lines.map(line => line.trim()).filter(line => 
+                        line.startsWith('vless://') || 
+                        line.startsWith('vmess://') || 
+                        line.startsWith('trojan://') || 
+                        line.startsWith('ss://')
+                    );
+                    allProxies = allProxies.concat(filtered);
+                }
+            } catch (e) {
+                console.error('Ошибка:', url);
+            }
+        }
+
+        const uniqueProxies = [...new Set(allProxies)];
+        output.innerText = uniqueProxies.length > 0 ? uniqueProxies.join('\n') : 'Ничего не найдено.';
+        status.innerText = `Найдено: ${uniqueProxies.length}`;
+    }
+
+    function copyToClipboard() {
+        const text = document.getElementById('output').innerText;
+        if (text === 'Здесь появится результат...') return;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Скопировано!');
+        });
+    }
 </script>
 
 </body>

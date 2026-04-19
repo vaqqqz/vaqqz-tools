@@ -13,19 +13,6 @@
         <h1>Проверка прокси</h1>
         <div class="blinking-cursor"></div>
     </div>
-
-    <div class="container">
-    <div class="header">
-         <h2>ВНИМАНИЕ!</h2>
-        <p>
-            Все, что представлено на этой странице — результат вайбкодинга. 
-            Что-то может работать некорректно, либо не работать вообще.
-        </p>
-        <p>
-            Если вы нашли проблему на странице — отправляйте мне в Телеграм-бота, буду исправлять :р
-        </p>
-        <a href="https://t.me/your_bot_here" target="_blank" class="tg-btn">Открыть Telegram-бота</a>
-    </div>
     
     <div class="input-group">
         <label>// Введите ссылки на TXT-файлы (каждая с новой строки)</label>
@@ -34,7 +21,7 @@
 
     <div class="input-group">
         <label>// Приоритетные теги (через запятую, например: RU,DE,US)</label>
-        <textarea id="filterTags" placeholder="RU,DE,US"></textarea>
+        <input id="filterTags" placeholder="RU,DE,US">
     </div>
     
     <div class="controls">
@@ -59,100 +46,68 @@
         </div>
     </div>
 </div>
-    
+
 <script>
-    window.addEventListener('DOMContentLoaded', () => {
-    const outputDiv = document.getElementById('output');
+(function() {
+    const out = document.getElementById('output');
+    const urlInput = document.getElementById('urls');
+    const tagInput = document.getElementById('filterTags');
     const executeBtn = document.getElementById('executeBtn');
     const copyBtn = document.getElementById('copyBtn');
     const downloadBtn = document.getElementById('downloadBtn');
-    const urlsInput = document.getElementById('urls');
-    const tagInput = document.getElementById('filterTags');
 
-    let finalProxies = [];
+    let finalSelection = [];
 
-    function log(text, success = false) {
-        const line = document.createElement('span');
-        line.className = 'terminal-line' + (success ? ' success' : '');
+    const MY_WORKER_URL = 'https://mycoreproxy.felame29.workers.dev/?u=';
 
-        const prefix = document.createElement('span');
-        prefix.className = 'terminal-prefix';
-        prefix.textContent = '$';
-
-        line.appendChild(prefix);
-        line.append(' ' + text);
-
-        outputDiv.appendChild(line);
-
-        if (outputDiv.children.length > 300) {
-            outputDiv.removeChild(outputDiv.firstChild);
-        }
-
-        outputDiv.scrollTop = outputDiv.scrollHeight;
+    function log(msg, ok = false) {
+        const span = document.createElement('span');
+        span.className = 'terminal-line' + (ok ? ' success' : '');
+        span.innerHTML = '<span class="terminal-prefix">$</span> ' + msg;
+        out.appendChild(span);
+        out.scrollTop = out.scrollHeight;
     }
 
-    async function fetchWithTimeout(url, timeout = 10000) {
-        const controller = new AbortController();
-        const id = setTimeout(() => controller.abort(), timeout);
-        try {
-            return await fetch(url, { signal: controller.signal });
-        } finally {
-            clearTimeout(id);
-        }
-    }
+    async function run() {
+        const val = urlInput.value.trim();
+        const tags = tagInput.value.toUpperCase().split(',').map(t => t.trim()).filter(t => t);
+        
+        if (!val) { log('Ошибка: Списки пустые.'); return; }
 
-    async function startProcessing() {
-        const urlsText = urlsInput.value.trim();
-        const tags = tagInput.value
-            .toUpperCase()
-            .split(',')
-            .map(t => t.trim())
-            .filter(Boolean);
-
-        if (!urlsText) {
-            log('ОШИБКА: Список пуст.');
-            return;
-        }
-
-        executeBtn.disabled = true;
-        outputDiv.innerHTML = '';
-        finalProxies = [];
-
-        const urls = urlsText.split('\n').map(u => u.trim()).filter(Boolean);
-
+        out.innerHTML = '';
         let allFound = [];
+        const links = val.split('\n').filter(l => l.trim());
 
-        log('ProxyPulse Engine: Запуск...');
+        log('Инициализация...');
 
-        for (let i = 0; i < urls.length; i++) {
+        for (let i = 0; i < links.length; i++) {
+            const currentUrl = links[i].trim();
             log('Parsing source ' + (i + 1) + '...');
 
             try {
-                const api = 'https://corsproxy.io/?' + encodeURIComponent(links[i].trim());
-                const res = await fetchWithTimeout(api);
+                const response = await fetch(MY_WORKER_URL + encodeURIComponent(currentUrl));
+                if (!response.ok) throw new Error('Status: ' + response.status);
 
-                if (!res.ok) throw new Error();
+                const contents = await response.text();
+                
+                const rawLines = contents.split('\n');
+                const protocols = ['vless://', 'vmess://', 'trojan://', 'ss://'];
 
-                const data = await res.json();
+                const extracted = rawLines.map(line => {
+                    const l = line.trim();
+                    for (let proto of protocols) {
+                        const idx = l.indexOf(proto);
+                        if (idx !== -1) return l.substring(idx);
+                    }
+                    return null;
+                }).filter(l => l !== null);
 
-                if (data && data.contents) {
-                    const rawLines = data.contents.split('\n');
-                    const protocols = ['vless://', 'vmess://', 'trojan://', 'ss://', 'hysteria://', 'tuic://'];
-
-                    const extracted = rawLines.map(line => {
-                        const l = line.trim();
-                        for (let proto of protocols) {
-                            const idx = l.indexOf(proto);
-                            if (idx !== -1) return l.substring(idx);
-                        }
-                        return null;
-                    }).filter(Boolean);
-
-                    allFound = allFound.concat(extracted);
-                    log('Extracted: ' + extracted.length, true);
-                }
+                allFound = allFound.concat(extracted);
+                log('Extracted: ' + extracted.length, true);
+                
             } catch (e) {
-                log('Error: Node unreachable.');
+                log('Error: Не удалось получить данные из источника ' + (i + 1));
+                console.error(e);
             }
         }
 
@@ -164,93 +119,46 @@
         allFound.forEach(proxy => {
             let isPriority = false;
             tags.forEach(tag => {
-                if (proxy.toUpperCase().includes(tag)) {
-                    isPriority = true;
-                }
+                if (proxy.toUpperCase().includes(tag)) isPriority = true;
             });
-
             if (isPriority) priority.push(proxy);
             else others.push(proxy);
         });
 
-        finalProxies = priority.concat(others);
-
+        finalSelection = priority.concat(others);
+        
         log('--------------------------------');
-        log('CLEANUP COMPLETE', true);
-        log('Sorted by priority: ' + priority.length);
-        log('Total unique nodes: ' + finalProxies.length, true);
-
-        executeBtn.disabled = false;
+        log('ОБРАБОТКА ЗАВЕРШЕНА', true);
+        log('Priority nodes: ' + priority.length);
+        log('Total unique nodes: ' + finalSelection.length, true);
     }
 
-    function fallbackCopy(text) {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        textarea.remove();
+    function copy() {
+        if (!finalSelection.length) { log('Ошибка: Нечего копировать.'); return; }
+        navigator.clipboard.writeText(finalSelection.join('\n'))
+            .then(() => log('SUCCESS: Ссылки скопированы в буфер.', true));
     }
 
-    function copyData() {
-        if (!finalProxies.length) {
-            log('Ошибка: Список пуст.');
-            return;
-        }
+    function download() {
+        if (!finalSelection.length) { log('Ошибка: Нечего скачивать.'); return; }
 
-        const text = finalProxies.join('\n');
-
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(text)
-                .then(() => log('SUCCESS: Data copied to clipboard.', true))
-                .catch(() => {
-                    fallbackCopy(text);
-                    log('Скопировано (fallback).', true);
-                });
-        } else {
-            fallbackCopy(text);
-            log('Скопировано (fallback).', true);
-        }
-    }
-
-    function downloadFile(filename, text) {
-        const blob = new Blob([text], { type: 'text/plain' });
+        const blob = new Blob([finalSelection.join('\n')], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
-
         const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
 
-        document.body.appendChild(a);
+        a.href = url;
+        a.download = 'proxies.txt';
         a.click();
 
-        document.body.removeChild(a);
         URL.revokeObjectURL(url);
+        log('Файл proxies.txt скачан.', true);
     }
 
-    function downloadData() {
-        if (!finalProxies.length) {
-            log('ОШИБКА: Нечего скачивать.');
-            return;
-        }
+    executeBtn.onclick = run;
+    copyBtn.onclick = copy;
+    downloadBtn.onclick = download;
 
-        const text = finalProxies.join('\n');
-
-        const date = new Date()
-            .toISOString()
-            .slice(0,19)
-            .replace(/[:T]/g, '-');
-
-        const filename = `proxies_${date}.txt`;
-
-        downloadFile(filename, text);
-        log(`Файл ${filename} скачан.`, true);
-    }
-
-    executeBtn.onclick = startProcessing;
-    copyBtn.onclick = copyData;
-    downloadBtn.onclick = downloadData;
-});
+})();
 </script>
 
 </body>

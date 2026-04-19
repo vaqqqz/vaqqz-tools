@@ -10,38 +10,38 @@
 
 <div class="container">
     <div class="header">
-        <h1>Proxy_CLI</h1>
-        <span class="blinking-cursor"></span>
+        <h1>Проверка прокси</h1>
+        <div class="blinking-cursor"></div>
     </div>
     
     <div class="input-group">
-        <label for="urls">// Введите ссылки на TXT-файлы (каждая с новой строки)</label>
-        <textarea id="urls" placeholder="https://raw.githubusercontent.com/example/proxies.txt"></textarea>
+        <label>// Введите ссылки на TXT-файлы (каждая с новой строки)</label>
+        <textarea id="urls" placeholder="https://raw.githubusercontent.com/..."></textarea>
     </div>
     
     <div class="controls">
-        <button id="executeBtn">[ Execute ]</button>
-        <button id="copyBtn">[ Copy Output ]</button>
+        <button id="executeBtn">EXECUTE</button>
+        <button id="copyBtn">COPY OUTPUT</button>
     </div>
 
     <div class="terminal">
         <div class="terminal-header">
             <div class="terminal-dots">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
             </div>
-            <span class="terminal-title">bash - root@proxy-node:~</span>
+            <div class="terminal-title">bash — root@proxy-node:~</div>
         </div>
         <div class="terminal-body" id="output">
-            <span class="terminal-line"><span class="terminal-prefix">$</span> Система готова. Ожидание команды Execute...</span>
+            <span class="terminal-line"><span class="terminal-prefix">$</span> Система готова. Ожидание команды...</span>
         </div>
     </div>
 </div>
 
 <script>
-    // Весь код оборачиваем в проверку загрузки страницы
-    window.addEventListener('load', () => {
+    // Ждем полной загрузки DOM
+    window.addEventListener('DOMContentLoaded', () => {
         const outputDiv = document.getElementById('output');
         const executeBtn = document.getElementById('executeBtn');
         const copyBtn = document.getElementById('copyBtn');
@@ -52,7 +52,7 @@
         function logToTerminal(text, isSuccess = false) {
             const line = document.createElement('span');
             line.className = 'terminal-line' + (isSuccess ? ' success' : '');
-            line.innerHTML = `<span class="terminal-prefix">$</span> ${text}`;
+            line.innerHTML = <span class="terminal-prefix">$</span> ${text};
             outputDiv.appendChild(line);
             outputDiv.scrollTop = outputDiv.scrollHeight;
         }
@@ -60,7 +60,7 @@
         async function startProcessing() {
             const urlsText = urlsInput.value.trim();
             if (!urlsText) {
-                logToTerminal('ОШИБКА: Поле ввода пустое.');
+                logToTerminal('ОШИБКА: Список ссылок пуст.');
                 return;
             }
 
@@ -68,16 +68,19 @@
             finalProxies = [];
             
             const urls = urlsText.split('\n').map(url => url.trim()).filter(url => url);
-            logToTerminal(`Запуск... Найдено источников: ${urls.length}`);
+            logToTerminal(Запуск... Найдено источников: ${urls.length});
 
             for (let i = 0; i < urls.length; i++) {
                 const url = urls[i];
-                logToTerminal(`Запрос [${i+1}/${urls.length}]: ${url.substring(0, 30)}...`);
+                logToTerminal(Запрос [${i + 1}/${urls.length}]: Загрузка...);
                 
                 try {
-                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-                    const response = await fetch(proxyUrl);
-                    if (!response.ok) throw new Error();
+                    // Используем сервис для обхода CORS
+                    const apiUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+                    const response = await fetch(apiUrl);
+                    
+                    if (!response.ok) throw new Error('Network error');
+                    
                     const data = await response.json();
                     
                     if (data.contents) {
@@ -91,33 +94,37 @@
                         
                         if (filtered.length > 0) {
                             finalProxies = finalProxies.concat(filtered);
-                            logToTerminal(`OK: Получено ${filtered.length} конфигов.`, true);
-                        } else {
-                            logToTerminal(`FAIL: Прокси не обнаружены.`);
+                            logToTerminal(OK: Получено ${filtered.length} конфигов., true);
+    } else {
+                            logToTerminal(FAIL: Прокси в файле не найдены.);
                         }
                     }
                 } catch (e) {
-                    logToTerminal(`ОШИБКА: Ошибка доступа к файлу.`);
+                    logToTerminal(ОШИБКА: Не удалось прочитать источник.);
                 }
             }
+
             finalProxies = [...new Set(finalProxies)];
             logToTerminal('-----------------------------------');
-            logToTerminal(ЗАВЕРШЕНО. Уникальных прокси: ${finalProxies.length}, true);
+            logToTerminal(ГОТОВО. Уникальных прокси: ${finalProxies.length}, true);
         }
 
         function copyData() {
             if (finalProxies.length === 0) {
-                logToTerminal('ОШИБКА: Буфер пуст.');
+                logToTerminal('ОШИБКА: Нечего копировать.');
                 return;
             }
-            navigator.clipboard.writeText(finalProxies.join('\n')).then(() => {
+            const textToCopy = finalProxies.join('\n');
+            navigator.clipboard.writeText(textToCopy).then(() => {
                 logToTerminal('ИНФО: Список скопирован в буфер.', true);
+            }).catch(() => {
+                logToTerminal('ОШИБКА: Нет доступа к буферу обмена.');
             });
         }
 
-        // ПРИВЯЗКА КНОПОК К ФУНКЦИЯМ
-        if (executeBtn) executeBtn.onclick = startProcessing;
-        if (copyBtn) copyBtn.onclick = copyData;
+        // Привязываем события
+        executeBtn.onclick = startProcessing;
+        copyBtn.onclick = copyData;
     });
 </script>
 

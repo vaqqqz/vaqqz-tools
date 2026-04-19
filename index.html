@@ -63,7 +63,28 @@
 </div>
     
 <script>
-window.addEventListener('DOMContentLoaded', () => {
+
+    window.addEventListener('DOMContentLoaded', () => {
+    const page = document.getElementById('pageContent');
+    const overlay = document.getElementById('noticeOverlay');
+    const closeBtn = document.getElementById('closeNotice');
+
+    // Включаем блюр при старте
+    page.classList.add('blurred');
+
+    function closeNotice(e) {
+        if (e) e.stopPropagation();
+        overlay.style.display = 'none';
+        page.classList.remove('blurred');
+    }
+
+    closeBtn.addEventListener('click', closeNotice);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeNotice(e);
+    });
+});
+    
+    window.addEventListener('DOMContentLoaded', () => {
     const outputDiv = document.getElementById('output');
     const executeBtn = document.getElementById('executeBtn');
     const copyBtn = document.getElementById('copyBtn');

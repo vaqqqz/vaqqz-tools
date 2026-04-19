@@ -87,7 +87,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     /* ---------- FETCH PROXIES ---------- */
     async function fetchProxies(url, index, total, uniqueSet) {
-        log(Запрос [${index}/${total}]: Загрузка...);
+        log(`Запрос [${index}/${total}]: Загрузка...`);
 
         try {
             const apiUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
@@ -150,7 +150,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const uniqueSet = new Set();
 
-        log(Запуск... Источников: ${urls.length});
+        log(`Запуск... Источников: ${urls.length}`);
 
         await Promise.all(
             urls.map((url, i) => fetchProxies(url, i + 1, urls.length, uniqueSet))
@@ -159,7 +159,7 @@ window.addEventListener('DOMContentLoaded', () => {
         finalProxies = Array.from(uniqueSet);
 
         log('-----------------------------------');
-        log(ГОТОВО. Уникальных прокси: ${finalProxies.length}, true);
+        log(`ГОТОВО. Уникальных прокси: ${finalProxies.length}, true`);
 
         executeBtn.disabled = false;
         executeBtn.classList.remove('loading');

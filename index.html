@@ -72,7 +72,7 @@
 
             for (let i = 0; i < urls.length; i++) {
                 const url = urls[i];
-                logToTerminal(Запрос [${i + 1}/${urls.length}]: Загрузка...);
+                logToTerminal(`Запрос [${i + 1}/${urls.length}]: Загрузка...`);
                 
                 try {
                     // Используем сервис для обхода CORS
@@ -94,19 +94,19 @@
                         
                         if (filtered.length > 0) {
                             finalProxies = finalProxies.concat(filtered);
-                            logToTerminal(OK: Получено ${filtered.length} конфигов., true);
+                            logToTerminal(`OK: Получено ${filtered.length} конфигов.`, true);
     } else {
-                            logToTerminal(FAIL: Прокси в файле не найдены.);
+                            logToTerminal(`FAIL: Прокси в файле не найдены.`);
                         }
                     }
                 } catch (e) {
-                    logToTerminal(ОШИБКА: Не удалось прочитать источник.);
+                    logToTerminal(`ОШИБКА: Не удалось прочитать источник.`);
                 }
             }
 
             finalProxies = [...new Set(finalProxies)];
             logToTerminal('-----------------------------------');
-            logToTerminal(ГОТОВО. Уникальных прокси: ${finalProxies.length}, true);
+            logToTerminal(`ГОТОВО. Уникальных прокси: ${finalProxies.length}`, true);
         }
 
         function copyData() {

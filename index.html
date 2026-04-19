@@ -36,15 +36,25 @@
 </head>
 <body>
 
-<!-- МЕНЮ -->
 <div id="menu" class="screen active">
-    <div class="menu">
-        <button onclick="showPage('page1')">АГРЕГАТОР ПРОКСИ</button>
-        <button onclick="showPage('page2')">ВТОРАЯ СТРАНИЦА</button>
+    <div class="menu-wrapper">
+        <div class="menu-header">
+            <h1>Vaqqz Tools</h1>
+            <p>Разные инструменты для вашего удобства</p>
+        </div>
+
+        <div class="menu-grid">
+            <button onclick="showPage('page1')">АГРЕГАТОР ПРОКСИ</button>
+            <button onclick="showPage('page2')">СКОРО</button>
+        </div>
+
+        <div class="menu-footer">
+            <a href="https://github.com/your_repo" target="_blank" class="footer-btn github">GitHub</a>
+            <a href="https://t.me/your_bot_here" target="_blank" class="footer-btn telegram">Telegram Bot</a>
+        </div>
     </div>
 </div>
-
-<!-- СТРАНИЦА 1 (твой текущий сайт) -->
+    
 <div id="page1" class="screen">
     <button class="back-btn" onclick="showPage('menu')">Назад</button>
 

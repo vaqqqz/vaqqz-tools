@@ -52,7 +52,7 @@
         function logToTerminal(text, isSuccess = false) {
             const line = document.createElement('span');
             line.className = 'terminal-line' + (isSuccess ? ' success' : '');
-            line.innerHTML = <span class="terminal-prefix">$</span> ${text};
+            line.innerHTML = '<span class="terminal-prefix">$</span> ' + text;
             outputDiv.appendChild(line);
             outputDiv.scrollTop = outputDiv.scrollHeight;
         }

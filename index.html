@@ -18,6 +18,11 @@
         <label>// Введите ссылки на TXT-файлы (каждая с новой строки)</label>
         <textarea id="urls" placeholder="https://raw.githubusercontent.com/..."></textarea>
     </div>
+
+    <div class="input-group">
+        <label>// Приоритетные теги (через запятую, например: RU,DE,US)</label>
+        <input id="filterTags" placeholder="RU,DE,US">
+    </div>
     
     <div class="controls">
         <button id="executeBtn">ОТСОРТИРОВАТЬ</button>
@@ -49,10 +54,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const copyBtn = document.getElementById('copyBtn');
     const downloadBtn = document.getElementById('downloadBtn');
     const urlsInput = document.getElementById('urls');
+    const tagInput = document.getElementById('filterTags');
 
     let finalProxies = [];
 
-    /* ---------- LOG ---------- */
     function log(text, success = false) {
         const line = document.createElement('span');
         line.className = 'terminal-line' + (success ? ' success' : '');
@@ -73,11 +78,9 @@ window.addEventListener('DOMContentLoaded', () => {
         outputDiv.scrollTop = outputDiv.scrollHeight;
     }
 
-    /* ---------- FETCH WITH TIMEOUT ---------- */
-    async function fetchWithTimeout(url, timeout = 8000) {
+    async function fetchWithTimeout(url, timeout = 10000) {
         const controller = new AbortController();
         const id = setTimeout(() => controller.abort(), timeout);
-
         try {
             return await fetch(url, { signal: controller.signal });
         } finally {
@@ -85,52 +88,13 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /* ---------- FETCH PROXIES ---------- */
-    async function fetchProxies(url, index, total, uniqueSet) {
-        log(`Запрос [${index}/${total}]: Загрузка...`);
-
-        try {
-            const apiUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
-            const response = await fetchWithTimeout(apiUrl);
-
-            if (!response.ok) throw new Error();
-
-            const data = await response.json();
-
-            if (!data.contents) {
-                log('FAIL: Пустой ответ.');
-                return;
-            }
-
-            const lines = data.contents.split('\n');
-
-            const filtered = lines
-                .map(l => l.trim())
-                .filter(line =>
-                    line.startsWith('vless://') ||
-                    line.startsWith('vmess://') ||
-                    line.startsWith('trojan://') ||
-                    line.startsWith('ss://') ||
-                    line.startsWith('hysteria://') ||
-                    line.startsWith('tuic://')
-                );
-
-            if (filtered.length === 0) {
-                log('FAIL: Прокси не найдены.');
-                return;
-            }
-
-            filtered.forEach(p => uniqueSet.add(p));
-
-            log(`OK: ${filtered.length} конфигов, true`);
-    } catch (e) {
-            log('ОШИБКА: Не удалось загрузить.');
-        }
-    }
-
-    /* ---------- MAIN ---------- */
     async function startProcessing() {
         const urlsText = urlsInput.value.trim();
+        const tags = tagInput.value
+            .toUpperCase()
+            .split(',')
+            .map(t => t.trim())
+            .filter(Boolean);
 
         if (!urlsText) {
             log('ОШИБКА: Список пуст.');
@@ -138,34 +102,74 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         executeBtn.disabled = true;
-        executeBtn.classList.add('loading');
-
         outputDiv.innerHTML = '';
         finalProxies = [];
 
-        const urls = urlsText
-            .split('\n')
-            .map(u => u.trim())
-            .filter(Boolean);
+        const urls = urlsText.split('\n').map(u => u.trim()).filter(Boolean);
 
-        const uniqueSet = new Set();
+        let allFound = [];
 
-        log(`Запуск... Источников: ${urls.length}`);
+        log('ProxyPulse Engine: Запуск...');
 
-        await Promise.all(
-            urls.map((url, i) => fetchProxies(url, i + 1, urls.length, uniqueSet))
-        );
+        for (let i = 0; i < urls.length; i++) {
+            log('Parsing source ' + (i + 1) + '...');
 
-        finalProxies = Array.from(uniqueSet);
+            try {
+                const api = 'https://api.allorigins.win/get?url=' + encodeURIComponent(urls[i]);
+                const res = await fetchWithTimeout(api);
 
-        log('-----------------------------------');
-        log(`ГОТОВО. Уникальных прокси: ${finalProxies.length}, true`);
+                if (!res.ok) throw new Error();
+
+                const data = await res.json();
+
+                if (data && data.contents) {
+                    const rawLines = data.contents.split('\n');
+                    const protocols = ['vless://', 'vmess://', 'trojan://', 'ss://', 'hysteria://', 'tuic://'];
+
+                    const extracted = rawLines.map(line => {
+                        const l = line.trim();
+                        for (let proto of protocols) {
+                            const idx = l.indexOf(proto);
+                            if (idx !== -1) return l.substring(idx);
+                        }
+                        return null;
+                    }).filter(Boolean);
+
+                    allFound = allFound.concat(extracted);
+                    log('Extracted: ' + extracted.length, true);
+                }
+            } catch (e) {
+                log('Error: Node unreachable.');
+            }
+        }
+
+        allFound = [...new Set(allFound)];
+
+        let priority = [];
+        let others = [];
+
+        allFound.forEach(proxy => {
+            let isPriority = false;
+            tags.forEach(tag => {
+                if (proxy.toUpperCase().includes(tag)) {
+                    isPriority = true;
+                }
+            });
+
+            if (isPriority) priority.push(proxy);
+            else others.push(proxy);
+        });
+
+        finalProxies = priority.concat(others);
+
+        log('--------------------------------');
+        log('CLEANUP COMPLETE', true);
+        log('Sorted by priority: ' + priority.length);
+        log('Total unique nodes: ' + finalProxies.length, true);
 
         executeBtn.disabled = false;
-        executeBtn.classList.remove('loading');
     }
 
-    /* ---------- COPY ---------- */
     function fallbackCopy(text) {
         const textarea = document.createElement('textarea');
         textarea.value = text;
@@ -176,8 +180,8 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function copyData() {
-        if (finalProxies.length === 0) {
-            log('ОШИБКА: Нечего копировать.');
+        if (!finalProxies.length) {
+            log('Ошибка: Список пуст.');
             return;
         }
 
@@ -185,7 +189,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (navigator.clipboard) {
             navigator.clipboard.writeText(text)
-                .then(() => log('Скопировано в буфер.', true))
+                .then(() => log('SUCCESS: Data copied to clipboard.', true))
                 .catch(() => {
                     fallbackCopy(text);
                     log('Скопировано (fallback).', true);
@@ -196,7 +200,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /* ---------- DOWNLOAD ---------- */
     function downloadFile(filename, text) {
         const blob = new Blob([text], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
@@ -213,7 +216,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function downloadData() {
-        if (finalProxies.length === 0) {
+        if (!finalProxies.length) {
             log('ОШИБКА: Нечего скачивать.');
             return;
         }
@@ -228,8 +231,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const filename = `proxies_${date}.txt`;
 
         downloadFile(filename, text);
-
-        log(`Файл ${filename} скачан., true`);
+        log(`Файл ${filename} скачан.`, true);
     }
 
     executeBtn.onclick = startProcessing;

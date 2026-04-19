@@ -22,6 +22,7 @@
     <div class="controls">
         <button id="executeBtn">ОТСОРТИРОВАТЬ</button>
         <button id="copyBtn">СКОПИРОВАТЬ КОНФИГИ</button>
+        <button id="downloadBtn">СКАЧАТЬ TXT</button>
     </div>
 
     <div class="terminal">
@@ -46,6 +47,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const outputDiv = document.getElementById('output');
     const executeBtn = document.getElementById('executeBtn');
     const copyBtn = document.getElementById('copyBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
     const urlsInput = document.getElementById('urls');
 
     let finalProxies = [];
@@ -64,7 +66,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
         outputDiv.appendChild(line);
 
-        // ограничение логов
         if (outputDiv.children.length > 300) {
             outputDiv.removeChild(outputDiv.firstChild);
         }
@@ -78,8 +79,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const id = setTimeout(() => controller.abort(), timeout);
 
         try {
-            const res = await fetch(url, { signal: controller.signal });
-            return res;
+            return await fetch(url, { signal: controller.signal });
         } finally {
             clearTimeout(id);
         }
@@ -87,7 +87,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     /* ---------- FETCH PROXIES ---------- */
     async function fetchProxies(url, index, total, uniqueSet) {
-        log(`Запрос [${index}/${total}]: Загрузка...`);
+        log(Запрос [${index}/${total}]: Загрузка...);
 
         try {
             const apiUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
@@ -122,12 +122,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
             filtered.forEach(p => uniqueSet.add(p));
 
-            log(`OK: ${filtered.length} конфигов`, true);
-
-        } catch (e) {
+            log(OK: ${filtered.length} конфигов, true);
+    } catch (e) {
             log('ОШИБКА: Не удалось загрузить.');
         }
     }
+
     /* ---------- MAIN ---------- */
     async function startProcessing() {
         const urlsText = urlsInput.value.trim();
@@ -150,7 +150,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const uniqueSet = new Set();
 
-        log(`Запуск... Источников: ${urls.length}`);
+        log(Запуск... Источников: ${urls.length});
 
         await Promise.all(
             urls.map((url, i) => fetchProxies(url, i + 1, urls.length, uniqueSet))
@@ -159,7 +159,7 @@ window.addEventListener('DOMContentLoaded', () => {
         finalProxies = Array.from(uniqueSet);
 
         log('-----------------------------------');
-        log(`ГОТОВО. Уникальных прокси: ${finalProxies.length}, true`);
+        log(ГОТОВО. Уникальных прокси: ${finalProxies.length}, true);
 
         executeBtn.disabled = false;
         executeBtn.classList.remove('loading');
@@ -196,12 +196,47 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /* ---------- DOWNLOAD ---------- */
+    function downloadFile(filename, text) {
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+
+        document.body.appendChild(a);
+        a.click();
+
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function downloadData() {
+        if (finalProxies.length === 0) {
+            log('ОШИБКА: Нечего скачивать.');
+            return;
+        }
+
+        const text = finalProxies.join('\n');
+
+        const date = new Date()
+            .toISOString()
+            .slice(0,19)
+            .replace(/[:T]/g, '-');
+
+        const filename = proxies_${date}.txt;
+
+        downloadFile(filename, text);
+
+        log(Файл ${filename} скачан., true);
+    }
+
     executeBtn.onclick = startProcessing;
     copyBtn.onclick = copyData;
+    downloadBtn.onclick = downloadData;
 });
 </script>
 
 </body>
 </html>
-
-`

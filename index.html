@@ -68,7 +68,7 @@
             finalProxies = [];
             
             const urls = urlsText.split('\n').map(url => url.trim()).filter(url => url);
-            logToTerminal(Запуск... Найдено источников: ${urls.length});
+            logToTerminal(`Запуск... Найдено источников: ${urls.length}`);
 
             for (let i = 0; i < urls.length; i++) {
                 const url = urls[i];
